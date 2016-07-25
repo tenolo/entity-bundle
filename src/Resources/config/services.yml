@@ -1,0 +1,8 @@
+parameters:
+    # factory
+#    tenolo_email.factory.class: Tenolo\Bundle\EmailBundle\Services\EmailFactory
+
+services:
+#    tenolo_email.factory:
+#        class: %tenolo_email.factory.class%
+#        arguments: ["@service_container"]
