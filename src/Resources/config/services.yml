@@ -1,8 +1,17 @@
 parameters:
-    # factory
-#    tenolo_email.factory.class: Tenolo\Bundle\EmailBundle\Services\EmailFactory
+
+    tenolo_entity.listener.entity.class: Tenolo\Bundle\EntityBundle\EventListener\EntityListener
+
+    # repository
+    tenolo_entity.default_repository.class: Tenolo\Bundle\EntityBundle\Repository\BaseEntityRepository
+
+    # gedmo
+    stof_doctrine_extensions.listener.softdeleteable.class: Tenolo\Bundle\EntityBundle\EventListener\SoftDeleteableListener
 
 services:
-#    tenolo_email.factory:
-#        class: %tenolo_email.factory.class%
-#        arguments: ["@service_container"]
+
+    tenolo_entity.listener.entity:
+        class: "%tenolo_entity.listener.entity.class%"
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
