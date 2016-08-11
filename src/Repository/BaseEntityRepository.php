@@ -184,6 +184,24 @@ class BaseEntityRepository extends EntityRepository implements BaseEntityReposit
     }
 
     /**
+     * @param       $field
+     * @param array $values
+     *
+     * @return mixed
+     */
+    public function findAllNotIn($field, array $values = array())
+    {
+        $qb = $this->getQueryBuilder();
+        $expr = $this->getExpr();
+
+        if (!empty($values)) {
+            $qb->andWhere($expr->notIn("p.{$field}", $values));
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
      * @inheritdoc
      */
     public function findAllCount()
