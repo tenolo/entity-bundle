@@ -1,6 +1,6 @@
 {
     "name": "tenolo/entity-bundle",
-    "description": "",
+    "description": "Add basic entity functions.",
     "keywords": [
         "entity",
         "bundle",
@@ -60,7 +60,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-release/2.0": "2.0-dev"
+            "dev-release/3.0": "3.0-dev"
         }
     },
     "minimum-stability": "dev",
