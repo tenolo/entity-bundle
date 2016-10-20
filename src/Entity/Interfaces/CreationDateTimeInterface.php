@@ -39,4 +39,24 @@ interface CreationDateTimeInterface
      * @return \DateTime
      */
     public function getUpdatedAt();
+
+    /**
+     * @return \DateTimeZone|null
+     */
+    public function getCreatedAtTimeZone();
+
+    /**
+     * @param \DateTimeZone $createdAtTimeZone
+     */
+    public function setCreatedAtTimeZone(\DateTimeZone $createdAtTimeZone);
+
+    /**
+     * @return \DateTimeZone|null
+     */
+    public function getUpdatedAtTimeZone();
+
+    /**
+     * @param \DateTimeZone $updatedAtTimeZone
+     */
+    public function setUpdatedAtTimeZone(\DateTimeZone $updatedAtTimeZone);
 } 

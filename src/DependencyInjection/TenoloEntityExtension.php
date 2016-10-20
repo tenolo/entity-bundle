@@ -32,6 +32,12 @@ class TenoloEntityExtension extends Extension implements PrependExtensionInterfa
     public function prepend(ContainerBuilder $container)
     {
         $doctrine = [
+            'dbal' => array(
+                'types' => [
+                    'datetimeutc' => 'ASM\Doctrine\DBAL\Types\DateTimeUTCType',
+                    'datetime' => 'ASM\Doctrine\DBAL\Types\DateTimeUTCType'
+                ]
+            ),
             'orm' => [
                 'default_repository_class' => 'Tenolo\Bundle\EntityBundle\Repository\BaseEntityRepository',
             ]
