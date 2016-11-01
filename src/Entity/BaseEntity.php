@@ -8,7 +8,6 @@ use Tenolo\Bundle\EntityBundle\Entity\Interfaces\BaseEntityInterface;
 use Tenolo\Bundle\EntityBundle\Entity\Scheme\CreationDateTime;
 use Tenolo\Bundle\EntityBundle\Entity\Scheme\DNA;
 use Tenolo\Bundle\EntityBundle\Entity\Scheme\ID;
-use Tenolo\Utilities\Utils\CryptUtil;
 
 /**
  * Class BaseEntity
