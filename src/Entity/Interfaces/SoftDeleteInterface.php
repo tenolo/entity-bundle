@@ -23,10 +23,10 @@ interface SoftDeleteInterface extends DeletableInterface
     /**
      * @return \DateTimeZone|null
      */
-    public function getCreatedAtTimeZone();
+    public function getDeletedAtTimeZone();
 
     /**
      * @param \DateTimeZone|null $createdAtTimeZone
      */
-    public function setCreatedAtTimeZone(\DateTimeZone $createdAtTimeZone = null);
+    public function setDeletedAtTimeZone(\DateTimeZone $createdAtTimeZone = null);
 }

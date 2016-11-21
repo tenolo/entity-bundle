@@ -15,12 +15,13 @@ trait SoftDelete
     use Deletable;
 
     /**
+     * @var \DateTime|null
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $deletedAt;
 
     /**
-     * @var string
+     * @var string|null
      * @ORM\Column(type="string", nullable=true)
      */
     protected $deletedAtTimeZone;
@@ -30,6 +31,10 @@ trait SoftDelete
      */
     public function getDeletedAt()
     {
+        if (!empty($this->deletedAt)) {
+            $this->deletedAt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+        }
+
         return $this->deletedAt;
     }
 
@@ -39,9 +44,9 @@ trait SoftDelete
     public function setDeletedAt(\DateTime $deletedAt = null)
     {
         if (is_null($deletedAt)) {
-            $this->setCreatedAtTimeZone(null);
+            $this->setDeletedAtTimeZone(null);
         } else {
-            $this->setCreatedAtTimeZone($deletedAt->getTimezone());
+            $this->setDeletedAtTimeZone($deletedAt->getTimezone());
         }
         $this->deletedAt = $deletedAt;
     }
@@ -49,24 +54,24 @@ trait SoftDelete
     /**
      * @return \DateTimeZone
      */
-    public function getCreatedAtTimeZone()
+    public function getDeletedAtTimeZone()
     {
-        if (is_null($this->createdAtTimeZone)) {
+        if (is_null($this->deletedAtTimeZone)) {
             return null;
         }
 
-        return new \DateTimeZone($this->createdAtTimeZone);
+        return new \DateTimeZone($this->deletedAtTimeZone);
     }
 
     /**
-     * @param \DateTimeZone $createdAtTimeZone
+     * @param \DateTimeZone $deletedAtTimeZone
      */
-    public function setCreatedAtTimeZone(\DateTimeZone $createdAtTimeZone = null)
+    public function setDeletedAtTimeZone(\DateTimeZone $deletedAtTimeZone = null)
     {
-        if (!is_null($createdAtTimeZone)) {
-            $this->createdAtTimeZone = $createdAtTimeZone->getName();
+        if (!is_null($deletedAtTimeZone)) {
+            $this->deletedAtTimeZone = $deletedAtTimeZone->getName();
         } else {
-            $this->createdAtTimeZone = $createdAtTimeZone;
+            $this->deletedAtTimeZone = $deletedAtTimeZone;
         }
     }
 }
