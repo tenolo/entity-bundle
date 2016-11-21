@@ -7,10 +7,10 @@ use Doctrine\ORM\QueryBuilder;
 
 /**
  * Class SortOrder
+ *
  * @package Tenolo\Bundle\EntityBundle\Repository\Helper
- * @author Nikita Loges
+ * @author  Nikita Loges
  * @company tenolo GbR
- * @date 02.07.14
  */
 trait SortOrder
 {
@@ -18,7 +18,7 @@ trait SortOrder
     public function findSortOrderBetween($start, $end, Criteria $criteria = null)
     {
         /** @var QueryBuilder $qb */
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->getQueryBuilder();
 
         if ($criteria) {
             $qb->addCriteria($criteria);
