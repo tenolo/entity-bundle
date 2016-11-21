@@ -192,7 +192,7 @@ class BaseEntityRepository extends EntityRepository implements BaseEntityReposit
     public function findAllNotIn($field, array $values = array())
     {
         $qb = $this->getQueryBuilder();
-        $expr = $this->getExpr();
+        $expr = $qb->expr();
 
         if (!empty($values)) {
             $qb->andWhere($expr->notIn("p.{$field}", $values));
