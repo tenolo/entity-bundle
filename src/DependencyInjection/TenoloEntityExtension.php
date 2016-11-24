@@ -34,8 +34,7 @@ class TenoloEntityExtension extends Extension implements PrependExtensionInterfa
         $doctrine = [
             'dbal' => array(
                 'types' => [
-                    'datetimeutc' => 'ASM\Doctrine\DBAL\Types\DateTimeUTCType',
-                    'datetime' => 'ASM\Doctrine\DBAL\Types\DateTimeUTCType'
+                    'datetimeutc' => 'ASM\Doctrine\DBAL\Types\DateTimeUTCType'
                 ]
             ),
             'orm' => [
