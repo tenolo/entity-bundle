@@ -40,6 +40,6 @@ trait DNA
      */
     public function createDna()
     {
-        $this->setDna(CryptUtil::getRandomHash());
+        $this->setDna(CryptUtil::getRandomHash(null, 12));
     }
 }
