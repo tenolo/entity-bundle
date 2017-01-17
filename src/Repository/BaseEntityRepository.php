@@ -42,6 +42,31 @@ class BaseEntityRepository extends EntityRepository implements BaseEntityReposit
     }
 
     /**
+     * @deprecated
+     */
+    public function getDefaultQueryBuilder()
+    {
+        return $this->getQueryBuilder();
+    }
+
+    /**
+     * @deprecated
+     */
+    public function getExpressionBuilder()
+    {
+        return $this->getQueryBuilder()->expr();
+    }
+
+    /**
+     * @deprecated
+     */
+    public function getExpr()
+    {
+        return $this->getExpressionBuilder();
+    }
+
+
+    /**
      * @inheritdoc
      */
     public function getQueryBuilder()
