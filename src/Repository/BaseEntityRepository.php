@@ -2,23 +2,28 @@
 
 namespace Tenolo\Bundle\EntityBundle\Repository;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Rb\Specification\Doctrine\Exception\LogicException;
+use Rb\Specification\Doctrine\Result\ModifierInterface;
+use Rb\Specification\Doctrine\SpecificationInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tenolo\Bundle\EntityBundle\Repository\Interfaces\BaseEntityRepositoryInterface;
+use Tenolo\Bundle\EntityBundle\Repository\Interfaces\SpecificationRepositoryInterface;
 
 /**
  * Class BaseEntityRepository
+ *
  * @package Tenolo\Bundle\EntityBundle\Repository;
- * @author Nikita Loges
+ * @author  Nikita Loges
  * @company tenolo GbR
- * @date 11.06.14
+ * @date    11.06.14
  */
-class BaseEntityRepository extends EntityRepository implements BaseEntityRepositoryInterface
+class BaseEntityRepository extends EntityRepository implements BaseEntityRepositoryInterface, SpecificationRepositoryInterface
 {
 
     /**
@@ -65,7 +70,6 @@ class BaseEntityRepository extends EntityRepository implements BaseEntityReposit
         return $this->getExpressionBuilder();
     }
 
-
     /**
      * @inheritdoc
      */
@@ -73,7 +77,6 @@ class BaseEntityRepository extends EntityRepository implements BaseEntityReposit
     {
         return $this->createQueryBuilder('p');
     }
-
 
     /**
      * @inheritdoc
@@ -124,14 +127,14 @@ class BaseEntityRepository extends EntityRepository implements BaseEntityReposit
     /**
      * @inheritdoc
      */
-    public function findOr404(Request $request, array $criteria = array())
+    public function findOr404(Request $request, array $criteria = [])
     {
         if ($request->get('slug')) {
-            $default = array('slug' => $request->get('slug'));
+            $default = ['slug' => $request->get('slug')];
         } elseif ($request->get('id')) {
-            $default = array('id' => $request->get('id'));
+            $default = ['id' => $request->get('id')];
         } else {
-            $default = array();
+            $default = [];
         }
         $criteria = array_merge($default, $criteria);
 
@@ -175,7 +178,7 @@ class BaseEntityRepository extends EntityRepository implements BaseEntityReposit
      */
     public function findOneByIdOr404($id)
     {
-        $criteria = array('id' => $id);
+        $criteria = ['id' => $id];
 
         return $this->findOneByOr404($criteria);
     }
@@ -189,9 +192,9 @@ class BaseEntityRepository extends EntityRepository implements BaseEntityReposit
 
         if (!$find) {
             $find = $this->createNew();
-            foreach($criteria as $ci => $value) {
-                $methodName = 'set'.ucfirst($ci);
-                if(method_exists($find, 'set'.ucfirst($ci))) {
+            foreach ($criteria as $ci => $value) {
+                $methodName = 'set' . ucfirst($ci);
+                if (method_exists($find, 'set' . ucfirst($ci))) {
                     call_user_func([$find, $methodName], $value);
                 }
             }
@@ -214,7 +217,7 @@ class BaseEntityRepository extends EntityRepository implements BaseEntityReposit
      *
      * @return mixed
      */
-    public function findAllNotIn($field, array $values = array())
+    public function findAllNotIn($field, array $values = [])
     {
         $qb = $this->getQueryBuilder();
         $expr = $qb->expr();
@@ -259,6 +262,37 @@ class BaseEntityRepository extends EntityRepository implements BaseEntityReposit
         $className = $this->getEntityName();
 
         return new $className;
+    }
+
+    /**
+     * @param SpecificationInterface $specification
+     * @param ModifierInterface|null $resultModifier
+     *
+     * @return \Doctrine\ORM\Query
+     * @throws LogicException
+     */
+    public function match(SpecificationInterface $specification, ModifierInterface $resultModifier = null)
+    {
+        if (!$specification->isSatisfiedBy($this->getEntityName())) {
+            throw new LogicException(sprintf(
+                'Specification "%s" not supported by this repository!',
+                get_class($specification)
+            ));
+        }
+
+        $queryBuilder = $this->getQueryBuilder();
+        $condition = $specification->modify($queryBuilder, $queryBuilder->getRootAliases()[0]);
+
+        if (!empty($condition)) {
+            $queryBuilder->where($condition);
+        }
+
+        $query = $queryBuilder->getQuery();
+        if ($resultModifier) {
+            $resultModifier->modify($query);
+        }
+
+        return $query;
     }
 
     /**
