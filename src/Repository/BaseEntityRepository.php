@@ -268,7 +268,7 @@ class BaseEntityRepository extends EntityRepository implements BaseEntityReposit
      * @param SpecificationInterface $specification
      * @param ModifierInterface|null $resultModifier
      *
-     * @return \Doctrine\ORM\Query
+     * @return \Doctrine\ORM\Query|QueryBuilder
      * @throws LogicException
      */
     public function match(SpecificationInterface $specification, ModifierInterface $resultModifier = null)
@@ -287,12 +287,14 @@ class BaseEntityRepository extends EntityRepository implements BaseEntityReposit
             $queryBuilder->where($condition);
         }
 
-        $query = $queryBuilder->getQuery();
-        if ($resultModifier) {
+        if($resultModifier) {
+            $query = $queryBuilder->getQuery();
             $resultModifier->modify($query);
+
+            return $query;
         }
 
-        return $query;
+        return $queryBuilder;
     }
 
     /**
