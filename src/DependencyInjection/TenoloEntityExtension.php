@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Tenolo\Bundle\EntityBundle\Doctrine\DBAL\Types\DateTimeUTCType;
 
 /**
  * Class TenoloEntityExtension.php
@@ -34,8 +35,7 @@ class TenoloEntityExtension extends Extension implements PrependExtensionInterfa
         $doctrine = [
             'dbal' => array(
                 'types' => [
-                    'datetimeutc' => 'ASM\Doctrine\DBAL\Types\DateTimeUTCType',
-                    'datetime' => 'ASM\Doctrine\DBAL\Types\DateTimeUTCType'
+                    'datetimeutc' => DateTimeUTCType::class
                 ]
             ),
             'orm' => [

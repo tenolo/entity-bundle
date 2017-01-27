@@ -22,29 +22,16 @@ trait CreationDateTime
     protected $createdAt;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $createdAtTimeZone;
-
-    /**
      * @var \DateTime
      * @ORM\Column(type="datetimeutc")
      */
     protected $updatedAt;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $updatedAtTimeZone;
-
-    /**
      * @inheritdoc
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
-        $this->setCreatedAtTimeZone($createdAt->getTimezone());
         $this->createdAt = $createdAt;
     }
 
@@ -53,11 +40,6 @@ trait CreationDateTime
      */
     public function getCreatedAt()
     {
-        if (empty($this->createdAt)) {
-            $this->setCreatedAt(new \DateTime());
-        } else {
-            $this->createdAt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-        }
 
         return $this->createdAt;
     }
@@ -75,7 +57,6 @@ trait CreationDateTime
      */
     public function setUpdatedAt(\DateTime $updatedAt)
     {
-        $this->setUpdatedAtTimeZone($updatedAt->getTimezone());
         $this->updatedAt = $updatedAt;
     }
 
@@ -84,12 +65,6 @@ trait CreationDateTime
      */
     public function getUpdatedAt()
     {
-        if (empty($this->updatedAt)) {
-            $this->setUpdatedAt(new \DateTime());
-        } else {
-            $this->updatedAt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-        }
-
         return $this->updatedAt;
     }
 
@@ -100,44 +75,4 @@ trait CreationDateTime
     {
         return !empty($this->updatedAt);
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function getCreatedAtTimeZone()
-    {
-        if (is_null($this->createdAtTimeZone)) {
-            return null;
-        }
-
-        return new \DateTimeZone($this->createdAtTimeZone);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setCreatedAtTimeZone(\DateTimeZone $createdAtTimeZone)
-    {
-        $this->createdAtTimeZone = $createdAtTimeZone->getName();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getUpdatedAtTimeZone()
-    {
-        if (is_null($this->updatedAtTimeZone)) {
-            return null;
-        }
-
-        return new \DateTimeZone($this->updatedAtTimeZone);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setUpdatedAtTimeZone(\DateTimeZone $updatedAtTimeZone)
-    {
-        $this->updatedAtTimeZone = $updatedAtTimeZone->getName();
-    }
-} 
+}
