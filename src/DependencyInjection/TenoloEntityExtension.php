@@ -8,6 +8,8 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Tenolo\Bundle\EntityBundle\Doctrine\DBAL\Types\DateTimeUTCType;
+use Tenolo\Bundle\EntityBundle\Doctrine\DBAL\Types\TimeUTCType;
+use Tenolo\Bundle\EntityBundle\Repository\BaseEntityRepository;
 
 /**
  * Class TenoloEntityExtension.php
@@ -33,22 +35,17 @@ class TenoloEntityExtension extends Extension implements PrependExtensionInterfa
     public function prepend(ContainerBuilder $container)
     {
         $doctrine = [
-            'dbal' => array(
+            'dbal' => [
                 'types' => [
-                    'datetimeutc' => DateTimeUTCType::class
+                    'datetimeutc' => DateTimeUTCType::class,
+                    'timeutc'     => TimeUTCType::class
                 ]
-            ),
-            'orm' => [
-                'default_repository_class' => 'Tenolo\Bundle\EntityBundle\Repository\BaseEntityRepository',
+            ],
+            'orm'  => [
+                'default_repository_class' => BaseEntityRepository::class,
             ]
         ];
 
-        foreach ($container->getExtensions() as $name => $extension) {
-            switch ($name) {
-                case 'doctrine':
-                    $container->prependExtensionConfig($name, $doctrine);
-                    break;
-            }
-        }
+        $container->prependExtensionConfig('doctrine', $doctrine);
     }
 }
