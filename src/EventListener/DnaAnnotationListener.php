@@ -86,7 +86,7 @@ class DnaAnnotationListener
             $dna = $request->get($methodAnnotation->dna);
 
             if ($entity->getDna() != $dna) {
-                return new NotFoundHttpException('Not Found');
+                throw new NotFoundHttpException('Not Found');
             }
         }
     }
