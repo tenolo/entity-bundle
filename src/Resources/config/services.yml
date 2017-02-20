@@ -15,3 +15,9 @@ services:
         tags:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: preUpdate }
+
+    tenolo_entity.listener.dna_annotation:
+        class: Tenolo\Bundle\EntityBundle\EventListener\DnaAnnotationListener
+        arguments: ["@annotation_reader", "@request_stack", "@doctrine.orm.entity_manager"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
