@@ -18,6 +18,10 @@ services:
 
     tenolo_entity.listener.dna_annotation:
         class: Tenolo\Bundle\EntityBundle\EventListener\DnaAnnotationListener
-        arguments: ["@annotation_reader", "@request_stack", "@doctrine.orm.entity_manager"]
+        arguments: ["@annotation_reader", "@tenolo_entity.services.entity_dna_verifier"]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
+    tenolo_entity.services.entity_dna_verifier:
+        class: Tenolo\Bundle\EntityBundle\Services\EntityDnaVerifier
+        arguments: ["@service_container"]
