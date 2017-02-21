@@ -4,11 +4,10 @@ namespace Tenolo\Bundle\EntityBundle\EventListener;
 
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Tenolo\Bundle\EntityBundle\Annotation\DnaAuthorization;
+use Tenolo\Bundle\EntityBundle\Services\EntityDnaVerifier;
 
 /**
  * Class DnaAnnotationListener
@@ -23,17 +22,17 @@ class DnaAnnotationListener
     /** @var Reader */
     protected $reader;
 
-    /** @var RequestStack */
-    protected $requestStack;
+    /** @var EntityDnaVerifier */
+    protected $dnaVerifier;
 
-    /** @var EntityManagerInterface */
-    protected $entityManager;
-
-    public function __construct(Reader $reader, RequestStack $requestStack, EntityManagerInterface $entityManager)
+    /**
+     * @param Reader            $reader
+     * @param EntityDnaVerifier $dnaVerifier
+     */
+    public function __construct(Reader $reader, EntityDnaVerifier $dnaVerifier)
     {
         $this->reader = $reader;
-        $this->requestStack = $requestStack;
-        $this->entityManager = $entityManager;
+        $this->dnaVerifier = $dnaVerifier;
     }
 
     /**
@@ -51,43 +50,50 @@ class DnaAnnotationListener
 
         list($controllerObject, $methodName) = $controller;
 
-        $controllerReflectionObject = new \ReflectionObject($controllerObject);
-        $annotationName = DnaAuthorization::class;
-        $request = $this->requestStack->getMasterRequest();
+        $controllerReflection = new \ReflectionObject($controllerObject);
+        $methodReflection = $controllerReflection->getMethod($methodName);
 
-        // Get method annotation
-        $reflectionMethod = $controllerReflectionObject->getMethod($methodName);
-
-        /** @var DnaAuthorization $methodAnnotation */
-        $methodAnnotation = $this->reader->getMethodAnnotation($reflectionMethod, $annotationName);
+        /** @var DnaAuthorization|null $methodAnnotation */
+        $methodAnnotation = $this->reader->getMethodAnnotation($methodReflection, DnaAuthorization::class);
 
         if ($methodAnnotation) {
             $paramName = $methodAnnotation->paramName;
-            $paramValue = $request->get($paramName);
 
             if ($methodAnnotation->className) {
                 $className = $methodAnnotation->className;
             } else {
-                $params = new ArrayCollection($reflectionMethod->getParameters());
-                $params = $params->filter(function (\ReflectionParameter $parameter) use ($paramName) {
-                    return ($parameter->getName() == $paramName);
-                });
-
-                if (!$params->count()) {
-                    return;
-                }
-
-                /** @var \ReflectionParameter $param */
-                $param = $params->first();
-                $className = $param->getClass()->getName();
+                $className = $this->getClassNameFromControllerMethod($methodAnnotation, $methodReflection);
             }
 
-            $entity = $this->entityManager->getRepository($className)->find($paramValue);
-            $dna = $request->get($methodAnnotation->dna);
+            $dnaParamName = $methodAnnotation->dna;
 
-            if ($entity->getDna() != $dna) {
+            if (!$this->dnaVerifier->verifyByRequest($className, $paramName, $dnaParamName)) {
                 throw new NotFoundHttpException('Not Found');
             }
         }
+    }
+
+    /**
+     * @param DnaAuthorization  $authorization
+     * @param \ReflectionMethod $reflectionMethod
+     *
+     * @return string
+     */
+    protected function getClassNameFromControllerMethod(DnaAuthorization $authorization, \ReflectionMethod $reflectionMethod)
+    {
+        $params = new ArrayCollection($reflectionMethod->getParameters());
+        $params = $params->filter(function (\ReflectionParameter $parameter) use ($authorization) {
+            return ($parameter->getName() == $authorization->paramName);
+        });
+
+        if (!$params->count()) {
+            throw new \RuntimeException('no parameter found');
+        }
+
+        /** @var \ReflectionParameter $param */
+        $param = $params->first();
+        $className = $param->getClass()->getName();
+
+        return $className;
     }
 }
