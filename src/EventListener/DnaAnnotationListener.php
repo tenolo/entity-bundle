@@ -57,17 +57,13 @@ class DnaAnnotationListener
         $methodAnnotation = $this->reader->getMethodAnnotation($methodReflection, DnaAuthorization::class);
 
         if ($methodAnnotation) {
-            $paramName = $methodAnnotation->paramName;
-
             if ($methodAnnotation->className) {
                 $className = $methodAnnotation->className;
             } else {
                 $className = $this->getClassNameFromControllerMethod($methodAnnotation, $methodReflection);
             }
 
-            $dnaParamName = $methodAnnotation->dna;
-
-            if (!$this->dnaVerifier->verifyByRequest($className, $paramName, $dnaParamName)) {
+            if (!$this->dnaVerifier->verifyByAnnotation($className, $methodAnnotation)) {
                 throw new NotFoundHttpException('Not Found');
             }
         }

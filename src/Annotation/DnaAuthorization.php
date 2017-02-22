@@ -24,6 +24,9 @@ class DnaAuthorization
     /** @var string */
     public $dna = 'dna';
 
+    /** @var string */
+    public $nullable = true;
+
     public function __construct($options)
     {
         if (isset($options['value'])) {
