@@ -3,6 +3,7 @@
 namespace Tenolo\Bundle\EntityBundle\Services;
 
 use Tenolo\Bundle\CoreBundle\Service\AbstractService;
+use Tenolo\Bundle\EntityBundle\Annotation\DnaAuthorization;
 use Tenolo\Bundle\EntityBundle\Entity\Interfaces\DNAInterface;
 
 /**
@@ -14,6 +15,23 @@ use Tenolo\Bundle\EntityBundle\Entity\Interfaces\DNAInterface;
  */
 class EntityDnaVerifier extends AbstractService
 {
+
+    /**
+     * @param                  $className
+     * @param DnaAuthorization $methodAnnotation
+     *
+     * @return bool
+     */
+    public function verifyByAnnotation($className, DnaAuthorization $methodAnnotation)
+    {
+        $paramValue = $this->getRequest()->get($methodAnnotation->paramName);
+
+        if ($methodAnnotation->nullable && is_null($paramValue)) {
+            return true;
+        }
+
+        return $this->verifyByRequest($className, $methodAnnotation->paramName, $methodAnnotation->dna);
+    }
 
     /**
      * @param $className
