@@ -19,14 +19,4 @@ interface SoftDeleteInterface extends DeletableInterface
      * @param \DateTime|null $deletedAt
      */
     public function setDeletedAt(\DateTime $deletedAt = null);
-
-    /**
-     * @return \DateTimeZone|null
-     */
-    public function getDeletedAtTimeZone();
-
-    /**
-     * @param \DateTimeZone|null $createdAtTimeZone
-     */
-    public function setDeletedAtTimeZone(\DateTimeZone $createdAtTimeZone = null);
 }
