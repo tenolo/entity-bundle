@@ -2,6 +2,8 @@
 
 namespace Tenolo\Bundle\EntityBundle\Entity\Scheme;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Class SoftDelete
  *
@@ -21,20 +23,10 @@ trait SoftDelete
     protected $deletedAt;
 
     /**
-     * @var string|null
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $deletedAtTimeZone;
-
-    /**
      * @return \DateTime
      */
     public function getDeletedAt()
     {
-        if (!empty($this->deletedAt)) {
-            $this->deletedAt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-        }
-
         return $this->deletedAt;
     }
 
@@ -43,35 +35,6 @@ trait SoftDelete
      */
     public function setDeletedAt(\DateTime $deletedAt = null)
     {
-        if (is_null($deletedAt)) {
-            $this->setDeletedAtTimeZone(null);
-        } else {
-            $this->setDeletedAtTimeZone($deletedAt->getTimezone());
-        }
         $this->deletedAt = $deletedAt;
-    }
-
-    /**
-     * @return \DateTimeZone
-     */
-    public function getDeletedAtTimeZone()
-    {
-        if (is_null($this->deletedAtTimeZone)) {
-            return null;
-        }
-
-        return new \DateTimeZone($this->deletedAtTimeZone);
-    }
-
-    /**
-     * @param \DateTimeZone $deletedAtTimeZone
-     */
-    public function setDeletedAtTimeZone(\DateTimeZone $deletedAtTimeZone = null)
-    {
-        if (!is_null($deletedAtTimeZone)) {
-            $this->deletedAtTimeZone = $deletedAtTimeZone->getName();
-        } else {
-            $this->deletedAtTimeZone = $deletedAtTimeZone;
-        }
     }
 }

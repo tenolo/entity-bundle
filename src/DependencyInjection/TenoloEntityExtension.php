@@ -37,6 +37,7 @@ class TenoloEntityExtension extends Extension implements PrependExtensionInterfa
         $doctrine = [
             'dbal' => [
                 'types' => [
+                    'datetime' => DateTimeUTCType::class,
                     'datetimeutc' => DateTimeUTCType::class,
                     'timeutc'     => TimeUTCType::class
                 ]
