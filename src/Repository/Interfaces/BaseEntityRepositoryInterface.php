@@ -5,15 +5,19 @@ namespace Tenolo\Bundle\EntityBundle\Repository\Interfaces;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\DBAL\Query\QueryBuilder;
+use Rb\Specification\Doctrine\SpecificationInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class BaseEntityRepositoryInterface
+ *
  * @package Tenolo\Bundle\EntityBundle\Repository\Interfaces
- * @author Nikita Loges, tenolo GbR
+ * @author  Nikita Loges, tenolo GbR
  */
-interface BaseEntityRepositoryInterface extends ObjectRepository, Selectable {
+interface BaseEntityRepositoryInterface extends ObjectRepository, Selectable, SpecificationRepositoryInterface
+{
 
     /**
      * @return \Doctrine\ORM\QueryBuilder
@@ -37,20 +41,23 @@ interface BaseEntityRepositoryInterface extends ObjectRepository, Selectable {
 
     /**
      * @param Request $request
-     * @param array $criteria
+     * @param array   $criteria
+     *
      * @return mixed
      * @throws NotFoundHttpException
      */
-    public function findOr404(Request $request, array $criteria = array());
+    public function findOr404(Request $request, array $criteria = []);
 
     /**
      * @param array $criteria
+     *
      * @return null|object
      */
     public function findOneByOr404(array $criteria);
 
     /**
      * @param $id
+     *
      * @return null|object
      */
     public function findOneByIdOr404($id);
@@ -58,6 +65,7 @@ interface BaseEntityRepositoryInterface extends ObjectRepository, Selectable {
     /**
      * @param array $criteria
      * @param array $orderBy
+     *
      * @return mixed|null|object
      */
     public function findOneByOrCreate(array $criteria, array $orderBy = null, $flush = true);
@@ -69,6 +77,7 @@ interface BaseEntityRepositoryInterface extends ObjectRepository, Selectable {
 
     /**
      * @param Criteria $criteria
+     *
      * @return int
      */
     public function findCount(Criteria $criteria = null);
@@ -82,4 +91,11 @@ interface BaseEntityRepositoryInterface extends ObjectRepository, Selectable {
      * @return \ReflectionClass
      */
     public function getEntityClassReflection();
+
+    /**
+     * @param SpecificationInterface $specification
+     *
+     * @return QueryBuilder
+     */
+    public function getSpecificationQueryBuilder(SpecificationInterface $specification);
 }

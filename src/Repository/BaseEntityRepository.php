@@ -13,7 +13,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tenolo\Bundle\EntityBundle\Repository\Interfaces\BaseEntityRepositoryInterface;
-use Tenolo\Bundle\EntityBundle\Repository\Interfaces\SpecificationRepositoryInterface;
 
 /**
  * Class BaseEntityRepository
@@ -23,7 +22,7 @@ use Tenolo\Bundle\EntityBundle\Repository\Interfaces\SpecificationRepositoryInte
  * @company tenolo GbR
  * @date    11.06.14
  */
-class BaseEntityRepository extends EntityRepository implements BaseEntityRepositoryInterface, SpecificationRepositoryInterface
+class BaseEntityRepository extends EntityRepository implements BaseEntityRepositoryInterface
 {
 
     /**
@@ -273,6 +272,26 @@ class BaseEntityRepository extends EntityRepository implements BaseEntityReposit
      */
     public function match(SpecificationInterface $specification, ModifierInterface $resultModifier = null)
     {
+        $queryBuilder = $this->getSpecificationQueryBuilder($specification);
+
+        if ($resultModifier) {
+            $query = $queryBuilder->getQuery();
+            $resultModifier->modify($query);
+
+            return $query;
+        }
+
+        return $queryBuilder;
+    }
+
+    /**
+     * @param SpecificationInterface $specification
+     *
+     * @return QueryBuilder
+     * @throws LogicException
+     */
+    public function getSpecificationQueryBuilder(SpecificationInterface $specification)
+    {
         if (!$specification->isSatisfiedBy($this->getEntityName())) {
             throw new LogicException(sprintf(
                 'Specification "%s" not supported by this repository!',
@@ -285,13 +304,6 @@ class BaseEntityRepository extends EntityRepository implements BaseEntityReposit
 
         if (!empty($condition)) {
             $queryBuilder->where($condition);
-        }
-
-        if($resultModifier) {
-            $query = $queryBuilder->getQuery();
-            $resultModifier->modify($query);
-
-            return $query;
         }
 
         return $queryBuilder;
