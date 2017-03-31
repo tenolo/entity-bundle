@@ -7,18 +7,8 @@ namespace Tenolo\Bundle\EntityBundle\Entity\Interfaces;
  * @package Tenolo\Bundle\EntityBundle\Entity\Interfaces
  * @author Nikita Loges
  */
-interface SortOrderInterface
+interface SortOrderInterface extends SimpleSortOderInterface
 {
-
-    /**
-     * @param int $sortOrder
-     */
-    public function setSortOrder($sortOrder);
-
-    /**
-     * @return int
-     */
-    public function getSortOrder();
 
     /**
      * @param int $increase
