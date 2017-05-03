@@ -2,6 +2,7 @@
 
 namespace Tenolo\Bundle\EntityBundle\DependencyInjection;
 
+use Sonata\Doctrine\Types\JsonType;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -37,7 +38,8 @@ class TenoloEntityExtension extends Extension implements PrependExtensionInterfa
         $doctrine = [
             'dbal' => [
                 'types' => [
-                    'datetime' => DateTimeUTCType::class,
+                    'json'        => JsonType::class,
+                    'datetime'    => DateTimeUTCType::class,
                     'datetimeutc' => DateTimeUTCType::class,
                     'timeutc'     => TimeUTCType::class
                 ]
