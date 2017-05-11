@@ -36,6 +36,7 @@
 
         "tenolo/utilities": "~1.2",
 
+        "sonata-project/doctrine-extensions": "~1.0",
         "rikbruil/doctrine-specification": "~1.1",
         "austinsmorris/doctrine-dbal-datetimeutc": "~2.0",
         "stof/doctrine-extensions-bundle": "~1.2",
