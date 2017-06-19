@@ -34,6 +34,7 @@
         "doctrine/common": "~2.6",
         "doctrine/orm": "~2.5",
 
+        "tenolo/core-bundle": "~2.0|~3.0",
         "tenolo/utilities": "~1.2",
 
         "sonata-project/doctrine-extensions": "~1.0",
