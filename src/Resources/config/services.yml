@@ -24,4 +24,6 @@ services:
 
     tenolo_entity.services.entity_dna_verifier:
         class: Tenolo\Bundle\EntityBundle\Services\EntityDnaVerifier
-        arguments: ["@service_container"]
+        arguments:
+            - '@request_stack'
+            - '@doctrine'

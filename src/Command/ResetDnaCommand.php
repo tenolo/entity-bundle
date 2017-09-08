@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Tenolo\Bundle\CoreBundle\Component\DependencyInjection\Container\ContainerShortcuts;
 use Tenolo\Bundle\EntityBundle\Entity\Interfaces\DNAInterface;
 
 /**
@@ -18,8 +17,6 @@ use Tenolo\Bundle\EntityBundle\Entity\Interfaces\DNAInterface;
  */
 class ResetDnaCommand extends ContainerAwareCommand
 {
-
-    use ContainerShortcuts;
 
     /**
      * @inheritDoc
@@ -34,23 +31,25 @@ class ResetDnaCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+
         /** @var ClassMetadata[] $metadatas */
-        $metadatas = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
+        $metadatas = $em->getMetadataFactory()->getAllMetadata();
         foreach ($metadatas as $metadata) {
             $ref = $metadata->getReflectionClass();
 
             if ($ref->implementsInterface(DNAInterface::class) && !$ref->isAbstract()) {
-                $repo = $this->getEntityManager()->getRepository($ref->getName());
+                $repo = $em->getRepository($ref->getName());
 
                 /** @var DNAInterface[] $entities */
                 $entities = $repo->findAll();
 
                 foreach ($entities as $entity) {
                     $entity->createDna();
-                    $this->getEntityManager()->persist($entity);
+                    $em->persist($entity);
                 }
 
-                $this->getEntityManager()->flush();
+                $em->flush();
             }
         }
 

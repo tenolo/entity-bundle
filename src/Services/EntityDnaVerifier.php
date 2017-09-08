@@ -2,7 +2,8 @@
 
 namespace Tenolo\Bundle\EntityBundle\Services;
 
-use Tenolo\Bundle\CoreBundle\Service\AbstractService;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Tenolo\Bundle\EntityBundle\Annotation\DnaAuthorization;
 use Tenolo\Bundle\EntityBundle\Entity\Interfaces\DNAInterface;
 
@@ -13,8 +14,24 @@ use Tenolo\Bundle\EntityBundle\Entity\Interfaces\DNAInterface;
  * @author  Nikita Loges
  * @company tenolo GbR
  */
-class EntityDnaVerifier extends AbstractService
+class EntityDnaVerifier
 {
+
+    /** @var RequestStack */
+    protected $requestStack;
+
+    /** @var RegistryInterface */
+    protected $registry;
+
+    /**
+     * @param RequestStack      $requestStack
+     * @param RegistryInterface $registry
+     */
+    public function __construct(RequestStack $requestStack, RegistryInterface $registry)
+    {
+        $this->requestStack = $requestStack;
+        $this->registry = $registry;
+    }
 
     /**
      * @param                  $className
@@ -82,5 +99,23 @@ class EntityDnaVerifier extends AbstractService
         }
 
         return true;
+    }
+
+    /**
+     * @param $className
+     *
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    protected function findRepository($className)
+    {
+        return $this->registry->getRepository($className);
+    }
+
+    /**
+     * @return null|\Symfony\Component\HttpFoundation\Request
+     */
+    protected function getRequest()
+    {
+        return $this->requestStack->getCurrentRequest();
     }
 }
