@@ -19,7 +19,7 @@ class TimeUTCType extends TimeType
     const TIMEUTC = 'timeutc';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getName()
     {
@@ -27,7 +27,7 @@ class TimeUTCType extends TimeType
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
@@ -36,7 +36,7 @@ class TimeUTCType extends TimeType
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
@@ -58,7 +58,7 @@ class TimeUTCType extends TimeType
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {

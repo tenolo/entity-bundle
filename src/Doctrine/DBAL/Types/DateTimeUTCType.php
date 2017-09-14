@@ -17,7 +17,7 @@ class DateTimeUTCType extends \ASM\Doctrine\DBAL\Types\DateTimeUTCType
 {
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {

@@ -22,7 +22,7 @@ use Tenolo\Bundle\EntityBundle\Repository\BaseEntityRepository;
 class TenoloEntityExtension extends Extension implements PrependExtensionInterface
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -31,7 +31,7 @@ class TenoloEntityExtension extends Extension implements PrependExtensionInterfa
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function prepend(ContainerBuilder $container)
     {
