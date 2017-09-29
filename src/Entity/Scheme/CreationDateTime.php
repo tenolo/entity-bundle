@@ -30,7 +30,7 @@ trait CreationDateTime
     /**
      * @inheritdoc
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt = NULL)
     {
         $this->createdAt = $createdAt;
     }
@@ -55,7 +55,7 @@ trait CreationDateTime
     /**
      * @inheritdoc
      */
-    public function setUpdatedAt(\DateTime $updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = NULL)
     {
         $this->updatedAt = $updatedAt;
     }

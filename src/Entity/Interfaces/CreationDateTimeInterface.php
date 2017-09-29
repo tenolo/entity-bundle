@@ -17,7 +17,7 @@ interface CreationDateTimeInterface
      *
      * @param \DateTime $createdAt
      */
-    public function setCreatedAt(\DateTime $createdAt);
+    public function setCreatedAt(\DateTime $createdAt = NULL);
 
     /**
      * Get created
@@ -31,7 +31,7 @@ interface CreationDateTimeInterface
      *
      * @param \DateTime $updatedAt
      */
-    public function setUpdatedAt(\DateTime $updatedAt);
+    public function setUpdatedAt(\DateTime $updatedAt = NULL);
 
     /**
      * Get created

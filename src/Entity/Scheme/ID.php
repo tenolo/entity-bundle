@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @package Tenolo\Bundle\EntityBundle\Entity\Scheme
  * @author Nikita Loges
  * @company tenolo GbR
- * @date 25.06.14
  */
 trait ID
 {
