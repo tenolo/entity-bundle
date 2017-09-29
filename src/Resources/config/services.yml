@@ -1,24 +1,16 @@
-parameters:
-
-    tenolo_entity.listener.entity.class: Tenolo\Bundle\EntityBundle\EventListener\EntityListener
-
-    # repository
-    tenolo_entity.default_repository.class: Tenolo\Bundle\EntityBundle\Repository\BaseEntityRepository
-
-    # gedmo
-    stof_doctrine_extensions.listener.softdeleteable.class: Tenolo\Bundle\EntityBundle\EventListener\SoftDeleteableListener
-
 services:
 
     tenolo_entity.listener.entity:
-        class: "%tenolo_entity.listener.entity.class%"
+        class: Tenolo\Bundle\EntityBundle\EventListener\EntityListener
         tags:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: preUpdate }
 
     tenolo_entity.listener.dna_annotation:
         class: Tenolo\Bundle\EntityBundle\EventListener\DnaAnnotationListener
-        arguments: ["@annotation_reader", "@tenolo_entity.services.entity_dna_verifier"]
+        arguments: 
+            - "@annotation_reader"
+            - "@tenolo_entity.services.entity_dna_verifier"
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 
