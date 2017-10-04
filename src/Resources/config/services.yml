@@ -6,6 +6,12 @@ services:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: preUpdate }
 
+    tenolo_core.event_listener.doctrine_null_logger:
+        class: Tenolo\Bundle\EntityBundle\EventListener\DoctrineNullLoggerListener
+        arguments: ["@doctrine"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
     tenolo_entity.listener.dna_annotation:
         class: Tenolo\Bundle\EntityBundle\EventListener\DnaAnnotationListener
         arguments: 
