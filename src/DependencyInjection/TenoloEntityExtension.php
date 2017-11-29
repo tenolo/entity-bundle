@@ -39,6 +39,7 @@ class TenoloEntityExtension extends Extension implements PrependExtensionInterfa
             'dbal' => [
                 'types' => [
                     'json'        => JsonType::class,
+                    'date'        => DateTimeUTCType::class,
                     'datetime'    => DateTimeUTCType::class,
                     'datetimeutc' => DateTimeUTCType::class,
                     'timeutc'     => TimeUTCType::class
