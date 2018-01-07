@@ -62,9 +62,11 @@ class EntityListener
             return;
         }
 
-        if (empty($entity->getCreatedAt())) {
-            $entity->setCreatedAt(new \DateTime());
+        if (!empty($entity->getCreatedAt())) {
+            return;
         }
+
+        $entity->setCreatedAt(new \DateTime());
     }
 
     /**
@@ -76,7 +78,9 @@ class EntityListener
             return;
         }
 
-        $entity->setUpdatedAt(new \DateTime());
+        if (empty($entity->getCreatedAt()) || !$entity->isUseCustomDates()) {
+            $entity->setUpdatedAt(new \DateTime());
+        }
     }
 
 }

@@ -10,10 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @package Tenolo\Bundle\EntityBundle\Entity\Scheme
  * @author  Nikita Loges
  * @company tenolo GbR
- * @date    25.06.14
  */
 trait CreationDateTime
 {
+
+    use CustomDateTime;
 
     /**
      * @var \DateTime
@@ -30,7 +31,7 @@ trait CreationDateTime
     /**
      * @inheritdoc
      */
-    public function setCreatedAt(\DateTime $createdAt = NULL)
+    public function setCreatedAt(\DateTime $createdAt = null)
     {
         $this->createdAt = $createdAt;
     }
@@ -55,7 +56,7 @@ trait CreationDateTime
     /**
      * @inheritdoc
      */
-    public function setUpdatedAt(\DateTime $updatedAt = NULL)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
     }

@@ -2,12 +2,11 @@
 
 namespace Tenolo\Bundle\EntityBundle\Entity\Interfaces;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Class CreationDateTimeInterface
+ *
  * @package Tenolo\Bundle\EntityBundle\Entity\Interfaces
- * @author Nikita Loges
+ * @author  Nikita Loges
  */
 interface CreationDateTimeInterface
 {
@@ -17,7 +16,7 @@ interface CreationDateTimeInterface
      *
      * @param \DateTime $createdAt
      */
-    public function setCreatedAt(\DateTime $createdAt = NULL);
+    public function setCreatedAt(\DateTime $createdAt = null);
 
     /**
      * Get created
@@ -31,7 +30,7 @@ interface CreationDateTimeInterface
      *
      * @param \DateTime $updatedAt
      */
-    public function setUpdatedAt(\DateTime $updatedAt = NULL);
+    public function setUpdatedAt(\DateTime $updatedAt = null);
 
     /**
      * Get created
@@ -39,4 +38,14 @@ interface CreationDateTimeInterface
      * @return \DateTime
      */
     public function getUpdatedAt();
+
+    /**
+     * @return bool
+     */
+    public function isUseCustomDates();
+
+    /**
+     * @param bool $useCustomDates
+     */
+    public function setUseCustomDates($useCustomDates);
 }
