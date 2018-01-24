@@ -256,6 +256,18 @@ class BaseEntityRepository extends EntityRepository implements BaseEntityReposit
     /**
      * @inheritdoc
      */
+    public function truncate()
+    {
+        $cmd = $this->getClassMetadata();
+        $connection = $this->getEntityManager()->getConnection();
+        $dbPlatform = $connection->getDatabasePlatform();
+        $q = $dbPlatform->getTruncateTableSql($cmd->getTableName());
+        $connection->executeUpdate($q);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function createNew()
     {
         $className = $this->getEntityName();

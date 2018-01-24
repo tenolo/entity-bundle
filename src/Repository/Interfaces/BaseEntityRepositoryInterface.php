@@ -83,6 +83,11 @@ interface BaseEntityRepositoryInterface extends ObjectRepository, Selectable, Sp
     public function findCount(Criteria $criteria = null);
 
     /**
+     * delete all entries
+     */
+    public function truncate();
+
+    /**
      * @return mixed
      */
     public function createNew();
