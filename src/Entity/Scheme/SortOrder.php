@@ -7,17 +7,17 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Class SortOrder
+ *
  * @package Tenolo\Bundle\EntityBundle\Entity\Scheme
- * @author Nikita Loges
+ * @author  Nikita Loges
  * @company tenolo GbR
- * @date 30.06.14
  */
 trait SortOrder
 {
 
     /**
      * @Gedmo\SortablePosition
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     protected $sortOrder;
 
@@ -26,7 +26,7 @@ trait SortOrder
      */
     public function setSortOrder($sortOrder)
     {
-        $this->sortOrder = $sortOrder;
+        $this->sortOrder = (int)$sortOrder;
     }
 
     /**
