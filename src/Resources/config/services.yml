@@ -25,3 +25,11 @@ services:
         arguments:
             - '@request_stack'
             - '@doctrine'
+
+    # command
+    tenolo_entity.command.reset_dna:
+        class: Tenolo\Bundle\EntityBundle\Command\ResetDnaCommand
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: console.command }

@@ -43,7 +43,7 @@ class EntityDnaVerifier
     {
         $paramValue = $this->getRequest()->get($methodAnnotation->paramName);
 
-        if ($methodAnnotation->nullable && is_null($paramValue)) {
+        if ($methodAnnotation->nullable && $paramValue === null) {
             return true;
         }
 
@@ -116,6 +116,6 @@ class EntityDnaVerifier
      */
     protected function getRequest()
     {
-        return $this->requestStack->getCurrentRequest();
+        return $this->requestStack->getMasterRequest();
     }
 }

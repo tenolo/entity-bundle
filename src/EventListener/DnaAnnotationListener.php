@@ -37,8 +37,6 @@ class DnaAnnotationListener
 
     /**
      * @param FilterControllerEvent $event
-     *
-     * @return NotFoundHttpException
      */
     public function onKernelController(FilterControllerEvent $event)
     {

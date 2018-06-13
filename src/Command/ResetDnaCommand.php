@@ -2,8 +2,9 @@
 
 namespace Tenolo\Bundle\EntityBundle\Command;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tenolo\Bundle\EntityBundle\Entity\Interfaces\DNAInterface;
@@ -15,8 +16,21 @@ use Tenolo\Bundle\EntityBundle\Entity\Interfaces\DNAInterface;
  * @author  Nikita Loges
  * @company tenolo GbR
  */
-class ResetDnaCommand extends ContainerAwareCommand
+class ResetDnaCommand extends Command
 {
+
+    /** @var ManagerRegistry */
+    protected $registry;
+
+    /**
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct();
+
+        $this->registry = $registry;
+    }
 
     /**
      * @inheritDoc
@@ -31,7 +45,7 @@ class ResetDnaCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $em = $this->getContainer()->get('doctrine')->getManager();
+        $em = $this->registry->getManager();
 
         /** @var ClassMetadata[] $metadatas */
         $metadatas = $em->getMetadataFactory()->getAllMetadata();
