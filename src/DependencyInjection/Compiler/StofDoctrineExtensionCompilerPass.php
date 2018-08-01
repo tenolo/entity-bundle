@@ -21,6 +21,10 @@ class StofDoctrineExtensionCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        if(!$container->hasDefinition('stof_doctrine_extensions.listener.softdeleteable')) {
+            return;
+        }
+
         $definition = $container->getDefinition('stof_doctrine_extensions.listener.softdeleteable');
         $definition->setClass(SoftDeleteableListener::class);
     }
