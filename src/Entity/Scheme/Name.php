@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @package Tenolo\Bundle\EntityBundle\Entity\Scheme
  * @author  Nikita Loges
  * @company tenolo GbR
- * @date    27.06.14
  */
 trait Name
 {
@@ -42,10 +41,10 @@ trait Name
      */
     public function __toString()
     {
-        if (is_null($this->getName())) {
+        if ($this->getName() === null) {
             return '';
-        } else {
-            return $this->getName();
         }
+
+        return $this->getName();
     }
 } 
