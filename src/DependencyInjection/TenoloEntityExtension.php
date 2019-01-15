@@ -2,6 +2,7 @@
 
 namespace Tenolo\Bundle\EntityBundle\DependencyInjection;
 
+use Doctrine\Common\EventSubscriber;
 use Sonata\Doctrine\Types\JsonType;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,8 +27,22 @@ class TenoloEntityExtension extends Extension implements PrependExtensionInterfa
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $this->registerTags($container);
+
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function registerTags(ContainerBuilder $container)
+    {
+        if (\Kernel::VERSION_ID < 30400) {
+            return;
+        }
+
+        $container->registerForAutoconfiguration(EventSubscriber::class)->addTag('doctrine.event_subscriber');
     }
 
     /**

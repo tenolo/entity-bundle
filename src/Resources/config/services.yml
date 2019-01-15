@@ -4,10 +4,7 @@ services:
         autoconfigure: true
         public: false
 
-    Tenolo\Bundle\EntityBundle\EventListener\EntityListener:
-        tags:
-            - { name: doctrine.event_subscriber }
-
+    Tenolo\Bundle\EntityBundle\EventListener\EntityListener: ~
     Tenolo\Bundle\EntityBundle\EventListener\DoctrineNullLoggerListener: ~
     Tenolo\Bundle\EntityBundle\EventListener\DnaAnnotationListener: ~
     Tenolo\Bundle\EntityBundle\Services\EntityDnaVerifier: ~
