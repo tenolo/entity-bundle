@@ -1,35 +1,16 @@
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
 
-    tenolo_entity.listener.entity:
-        class: Tenolo\Bundle\EntityBundle\EventListener\EntityListener
+    Tenolo\Bundle\EntityBundle\EventListener\EntityListener:
         tags:
-            - { name: doctrine.event_listener, event: prePersist }
-            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_subscriber }
 
-    tenolo_core.event_listener.doctrine_null_logger:
-        class: Tenolo\Bundle\EntityBundle\EventListener\DoctrineNullLoggerListener
-        arguments: ["@doctrine"]
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-
-    tenolo_entity.listener.dna_annotation:
-        class: Tenolo\Bundle\EntityBundle\EventListener\DnaAnnotationListener
-        arguments: 
-            - "@annotation_reader"
-            - "@tenolo_entity.services.entity_dna_verifier"
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-
-    tenolo_entity.services.entity_dna_verifier:
-        class: Tenolo\Bundle\EntityBundle\Services\EntityDnaVerifier
-        arguments:
-            - '@request_stack'
-            - '@doctrine'
+    Tenolo\Bundle\EntityBundle\EventListener\DoctrineNullLoggerListener: ~
+    Tenolo\Bundle\EntityBundle\EventListener\DnaAnnotationListener: ~
+    Tenolo\Bundle\EntityBundle\Services\EntityDnaVerifier: ~
 
     # command
-    tenolo_entity.command.reset_dna:
-        class: Tenolo\Bundle\EntityBundle\Command\ResetDnaCommand
-        arguments:
-            - '@doctrine'
-        tags:
-            - { name: console.command }
+    Tenolo\Bundle\EntityBundle\Command\ResetDnaCommand: ~

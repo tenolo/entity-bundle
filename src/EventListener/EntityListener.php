@@ -2,6 +2,7 @@
 
 namespace Tenolo\Bundle\EntityBundle\EventListener;
 
+use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Tenolo\Bundle\EntityBundle\Entity\Interfaces\CreationDateTimeInterface;
 use Tenolo\Bundle\EntityBundle\Entity\Interfaces\DNAInterface;
@@ -13,8 +14,19 @@ use Tenolo\Bundle\EntityBundle\Entity\Interfaces\DNAInterface;
  * @author  Nikita Loges
  * @company tenolo GbR
  */
-class EntityListener
+class EntityListener implements EventSubscriber
 {
+
+    /**
+     * @inheritDoc
+     */
+    public function getSubscribedEvents()
+    {
+        return [
+            'prePersist',
+            'preUpdate',
+        ];
+    }
 
     /**
      * @param LifecycleEventArgs $args

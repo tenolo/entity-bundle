@@ -4,8 +4,10 @@ namespace Tenolo\Bundle\EntityBundle\EventListener;
 
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Tenolo\Bundle\EntityBundle\Annotation\DnaAuthorization;
 use Tenolo\Bundle\EntityBundle\Services\EntityDnaVerifier;
 
@@ -16,7 +18,7 @@ use Tenolo\Bundle\EntityBundle\Services\EntityDnaVerifier;
  * @author  Nikita Loges
  * @company tenolo GbR
  */
-class DnaAnnotationListener
+class DnaAnnotationListener implements EventSubscriberInterface
 {
 
     /** @var Reader */
@@ -33,6 +35,16 @@ class DnaAnnotationListener
     {
         $this->reader = $reader;
         $this->dnaVerifier = $dnaVerifier;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::CONTROLLER => 'onKernelController'
+        ];
     }
 
     /**
@@ -77,7 +89,7 @@ class DnaAnnotationListener
     {
         $params = new ArrayCollection($reflectionMethod->getParameters());
         $params = $params->filter(function (\ReflectionParameter $parameter) use ($authorization) {
-            return ($parameter->getName() == $authorization->paramName);
+            return ($parameter->getName() === $authorization->paramName);
         });
 
         if (!$params->count()) {
@@ -86,8 +98,7 @@ class DnaAnnotationListener
 
         /** @var \ReflectionParameter $param */
         $param = $params->first();
-        $className = $param->getClass()->getName();
 
-        return $className;
+        return $param->getClass()->getName();
     }
 }

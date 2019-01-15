@@ -41,6 +41,10 @@ class EntityDnaVerifier
      */
     public function verifyByAnnotation($className, DnaAuthorization $methodAnnotation)
     {
+        if (empty($className)) {
+            return false;
+        }
+
         $paramValue = $this->getRequest()->get($methodAnnotation->paramName);
 
         if ($methodAnnotation->nullable && $paramValue === null) {
@@ -59,6 +63,10 @@ class EntityDnaVerifier
      */
     public function verifyByRequest($className, $paramName, $dnaParamName)
     {
+        if (empty($className)) {
+            return false;
+        }
+
         $paramValue = $this->getRequest()->get($paramName);
         $dnaValue = $this->getRequest()->get($dnaParamName);
 
@@ -74,6 +82,10 @@ class EntityDnaVerifier
      */
     public function verifyById($className, $entityId, $dna)
     {
+        if (empty($className)) {
+            return false;
+        }
+
         /** @var DNAInterface $entity */
         $entity = $this->findRepository($className)->find($entityId);
 
@@ -94,11 +106,7 @@ class EntityDnaVerifier
      */
     public function verify(DNAInterface $entity, $dna)
     {
-        if ($entity->getDna() != $dna) {
-            return false;
-        }
-
-        return true;
+        return $entity->getDna() === $dna;
     }
 
     /**

@@ -4,7 +4,9 @@ namespace Tenolo\Bundle\EntityBundle\EventListener;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Class DoctrineNullLoggerListener
@@ -13,7 +15,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
  * @author  Nikita Loges
  * @company tenolo GbR
  */
-class DoctrineNullLoggerListener
+class DoctrineNullLoggerListener implements EventSubscriberInterface
 {
 
     /** @var ManagerRegistry */
@@ -28,7 +30,17 @@ class DoctrineNullLoggerListener
     }
 
     /**
-     *
+     * @inheritDoc
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => 'onKernelRequest'
+        ];
+    }
+
+    /**
+     * @param GetResponseEvent $event
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
