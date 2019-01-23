@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\HttpKernel\Kernel;
 use Tenolo\Bundle\EntityBundle\Doctrine\DBAL\Types\DateTimeUTCType;
 use Tenolo\Bundle\EntityBundle\Doctrine\DBAL\Types\TimeUTCType;
 use Tenolo\Bundle\EntityBundle\Repository\BaseEntityRepository;
@@ -38,7 +39,7 @@ class TenoloEntityExtension extends Extension implements PrependExtensionInterfa
      */
     protected function registerTags(ContainerBuilder $container)
     {
-        if (\Kernel::VERSION_ID < 30400) {
+        if (Kernel::VERSION_ID < 30400) {
             return;
         }
 
