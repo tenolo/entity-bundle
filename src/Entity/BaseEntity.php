@@ -36,28 +36,4 @@ abstract class BaseEntity implements BaseEntityInterface
             $this->createDna();
         }
     }
-
-    /**
-     * @inheritdoc
-     */
-    public final function getClassName()
-    {
-        return (new \ReflectionClass($this))->getName();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public final function getClassShortName()
-    {
-        return (new \ReflectionClass($this))->getShortName();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public final function getClassNamespaceName()
-    {
-        return (new \ReflectionClass($this))->getNamespaceName();
-    }
-} 
+}
