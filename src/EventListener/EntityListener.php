@@ -30,6 +30,8 @@ class EntityListener implements EventSubscriber
 
     /**
      * @param LifecycleEventArgs $args
+     *
+     * @throws \Exception
      */
     public function prePersist(LifecycleEventArgs $args)
     {
@@ -42,6 +44,8 @@ class EntityListener implements EventSubscriber
 
     /**
      * @param LifecycleEventArgs $args
+     *
+     * @throws \Exception
      */
     public function preUpdate(LifecycleEventArgs $args)
     {
@@ -67,6 +71,8 @@ class EntityListener implements EventSubscriber
 
     /**
      * @param $entity
+     *
+     * @throws \Exception
      */
     protected function updateCreatedAt($entity)
     {
@@ -74,7 +80,7 @@ class EntityListener implements EventSubscriber
             return;
         }
 
-        if (!empty($entity->getCreatedAt())) {
+        if ($entity->getCreatedAt() !== null) {
             return;
         }
 
@@ -83,6 +89,8 @@ class EntityListener implements EventSubscriber
 
     /**
      * @param $entity
+     *
+     * @throws \Exception
      */
     protected function updateUpdatedAt($entity)
     {
@@ -90,7 +98,7 @@ class EntityListener implements EventSubscriber
             return;
         }
 
-        if (empty($entity->getCreatedAt()) || !$entity->isUseCustomDates()) {
+        if ($entity->getCreatedAt() === null || !$entity->isUseCustomDates()) {
             $entity->setUpdatedAt(new \DateTime());
         }
     }
