@@ -6,10 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Enable
+ *
  * @package Tenolo\Bundle\EntityBundle\Entity\Scheme
- * @author Nikita Loges
+ * @author  Nikita Loges
  * @company tenolo GbR
- * @date 30.07.14
+ * @date    30.07.14
  */
 trait Enable
 {
@@ -18,6 +19,14 @@ trait Enable
      * @ORM\Column(type="boolean", options={"default"=1})
      */
     protected $enable = true;
+
+    /**
+     * @param $enable
+     */
+    public function setEnabled($enable)
+    {
+        $this->setEnable($enable);
+    }
 
     /**
      * @param boolean $enable

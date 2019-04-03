@@ -13,6 +13,11 @@ interface EnableInterface
     /**
      * @param boolean $enable
      */
+    public function setEnabled($enable);
+
+    /**
+     * @param boolean $enable
+     */
     public function setEnable($enable);
 
     /**
