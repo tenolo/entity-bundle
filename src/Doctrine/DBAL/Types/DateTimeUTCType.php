@@ -2,6 +2,7 @@
 
 namespace Tenolo\Bundle\EntityBundle\Doctrine\DBAL\Types;
 
+use Carbon\Carbon;
 use DateTime;
 use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -25,6 +26,7 @@ class DateTimeUTCType extends \ASM\Doctrine\DBAL\Types\DateTimeUTCType
         $dateTime = parent::convertToPHPValue($value, $platform);
 
         if ($dateTime instanceof DateTime) {
+            $dateTime = Carbon::parse($dateTime->format('r'));
             $dateTime->setTimezone(new DateTimeZone(date_default_timezone_get()));
         }
 
