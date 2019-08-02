@@ -18,13 +18,13 @@ trait CreationDateTime
 
     /**
      * @var \DateTime
-     * @ORM\Column(type="datetimeutc")
+     * @ORM\Column(type="datetime")
      */
     protected $createdAt;
 
     /**
      * @var \DateTime
-     * @ORM\Column(type="datetimeutc")
+     * @ORM\Column(type="datetime")
      */
     protected $updatedAt;
 
